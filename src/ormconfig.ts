@@ -6,11 +6,11 @@ import { ColaboradorRegistroPonto } from "./database/Entities/ColaboradoresRegis
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: Enviroment.databaseUrl,
-  port: Enviroment.databasePort,
-  username: Enviroment.databaseUsername,
-
-  database: Enviroment.databaseName,
+  host: Enviroment.databaseProdUrl,
+  port: Enviroment.databaseProdPort,
+  username: Enviroment.databaseProdUsername,
+  password: Enviroment.databaseProdPassword,
+  database: Enviroment.databaseProdName,
   synchronize: true,
   logging: false,
   entities: [ColaboradorMobile, ColaboradorRegistroPonto],
