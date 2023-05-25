@@ -23,7 +23,7 @@ export class ResetPasswordService implements IService<IColaboradorMobile> {
     );
 
     const encryptedPassword = Util.generatePassword(7).toUpperCase();
-    UtilEmail.enviarEmail(email, "Código de recuperação", encryptedPassword);
+    // UtilEmail.enviarEmail(email, "Código de recuperação", encryptedPassword);
     if (!colaborador[0])
       throw new ErrorResponse(k_error, ErrorMessage.NOT_FOUND);
     const colaborador_id = colaborador[0].colaboradores_dados_gerais_id;
