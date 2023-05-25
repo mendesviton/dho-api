@@ -8,6 +8,7 @@ import { changePasswordSchema } from "./schema/ChangePasswordSchema";
 import { ChangePasswordController } from "./controllers/ChangePasswordController";
 import { ResetPasswordController } from "./controllers/ResetPasswordController";
 import { CreateRegistroPontoController } from "./controllers/CreateRegistroPontoController";
+import { UpdateImageProfileController } from "./controllers/UpdateImageProfileController";
 
 export default class Routes {
   private routes = Router();
@@ -17,12 +18,13 @@ export default class Routes {
     private authColaboradorController: AuthColaboradorController,
     private changePasswordController: ChangePasswordController,
     private resetPasswordController: ResetPasswordController,
-    private createRegistroPontoController: CreateRegistroPontoController
+    private createRegistroPontoController: CreateRegistroPontoController,
+    private updateImageProfileController: UpdateImageProfileController
   ) {}
 
   public buildRoutes(): Router {
     this.routes.post(
-      "/create/colaborador/:colaborador_id",
+      "/create/colaborador/:colaborador_id/:email",
 
       this.createColaboradorController.handle
     );
@@ -41,6 +43,10 @@ export default class Routes {
       "/create/point/:id",
       this.createRegistroPontoController.handle
     );
+    this.routes.put(
+      "/update/image/:id",
+      this.updateImageProfileController.handle
+    );
 
     return this.routes;
   }
@@ -54,7 +60,8 @@ router.use(
     new AuthColaboradorController(),
     new ChangePasswordController(),
     new ResetPasswordController(),
-    new CreateRegistroPontoController()
+    new CreateRegistroPontoController(),
+    new UpdateImageProfileController()
   ).buildRoutes()
 );
 

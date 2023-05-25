@@ -16,9 +16,10 @@ export class CreateColaboradorController
   async handle(req: Request, res: Response): Promise<Response> {
     const createColaboradorService = new CreateColaboradorService();
     try {
-      const result = await createColaboradorService.execute(
-        req.params.colaborador_id
-      );
+      const result = await createColaboradorService.execute({
+        colaborador_id: req.params.colaborador_id,
+        email: req.params.email,
+      });
       return res.status(httpStatus.CREATED).json(result);
     } catch (error) {
       if (error instanceof ErrorResponse) {

@@ -9,19 +9,18 @@ import IService from "../../interfaces/service/IServices";
 import httpStatus from "http-status";
 import { ErrorMessage, k_error } from "../../constants/Constants";
 import { ErrorResponse } from "../../shared/response/ErrorResponse";
-import { CreateRegistroPontoService } from "../../domain/services/CreateRegistroPontoService";
-export class CreateRegistroPontoController
+import { ChangePasswordService } from "../../domain/services/ChangePasswordService";
+import { UpdateImageProfileService } from "../../domain/services/UpdateImageProfileService";
+export class UpdateImageProfileController
   implements IController<IColaboradorMobile>
 {
   constructor() {}
   async handle(req: Request, res: Response): Promise<Response> {
-    const createRegistroPontoService = new CreateRegistroPontoService();
+    const updateImageProfileService = new UpdateImageProfileService();
     try {
-      const { register_type, image_point } = req.body;
-      const result = await createRegistroPontoService.execute({
-        image_point,
-        colaborador_mobile_id: req.params.id,
-        register_type,
+      const result = await updateImageProfileService.execute({
+        id: req.params.id,
+        image_profile: req.body.image_profile,
       });
       return res.status(httpStatus.CREATED).json(result);
     } catch (error) {

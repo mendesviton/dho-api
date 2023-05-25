@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 import bcrypt from "bcrypt";
-
+import nodemailer from "nodemailer";
 export class Util {
   static generatePassword(length: number): string {
     const randomBytesBuffer = randomBytes(Math.ceil(length / 2));
@@ -36,5 +36,34 @@ export class Util {
     } catch (error) {
       throw new Error("Erro ao comparar as senhas");
     }
+  }
+}
+
+export class UtilEmail {
+  static enviarEmail(destinatario, assunto, conteudo) {
+    const transporter = nodemailer.createTransport({
+      secure: false,
+      host: "us113-cp.valueserver.com.br",
+      port: 587, // Porta padrão do SMTP
+      auth: {
+        user: "noreply@dho.sispacksoftware.com.br",
+        pass: "9wY1gvNb8uTe",
+      },
+    });
+
+    const mailOptions = {
+      from: "noreply@dho.sispacksoftware.com.br",
+      to: destinatario,
+      subject: assunto,
+      text: conteudo,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("E-mail enviado: " + info.response);
+      }
+    });
   }
 }

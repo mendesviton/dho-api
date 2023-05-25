@@ -5,11 +5,7 @@ import IService from "../../interfaces/service/IServices";
 import { AppDataSource } from "../../ormconfig";
 import { ErrorResponse } from "../../shared/response/ErrorResponse";
 import { ErrorMessage, k_error, k_success } from "../../constants/Constants";
-import {
-  getColaboradorByEmailDocumentQuery,
-  getColaboradorByEmailQuery,
-  getColaboradorQuery,
-} from "../../database/Querys/Colaborador";
+import { getColaboradorByEmailDocumentQuery } from "../../database/Querys/Colaborador";
 import { LoginRequest } from "../../shared/request/AuthColaboradorRequest";
 import { Colaborador } from "../../database/mySQLTypes";
 import { Util } from "../../shared/Util";
@@ -24,8 +20,6 @@ export class AuthColaboradorService implements IService<IColaboradorMobile> {
   async execute(
     loginRequest: LoginRequest
   ): Promise<IResponse<IColaboradorMobile>> {
-    let new_colab: ColaboradorMobile;
-
     const { password, cpf, email } = loginRequest;
 
     const colaborador: Colaborador = await getColaboradorByEmailDocumentQuery(
@@ -43,16 +37,15 @@ export class AuthColaboradorService implements IService<IColaboradorMobile> {
     });
     if (!colaboradorMobile) {
       const encryptedPassword = Util.generatePassword(7).toUpperCase();
-      {
-        await this.colaboradorRepository.save({
-          colaborador_id: colaborador.id,
-          // TODO tirar a imagem mockada
-          image_profile:
-            "https://navalha.s3.amazonaws.com/barbershop/img-professional-f-padrao.png",
-          password: await Util.encryptPassword(encryptedPassword),
-        });
-        throw new ErrorResponse(k_error, "email_send");
-      }
+
+      await this.colaboradorRepository.save({
+        colaborador_id: colaborador.id,
+        // TODO tirar a imagem mockada
+        image_profile:
+          "https://navalha.s3.amazonaws.com/barbershop/img-professional-f-padrao.png",
+        password: await Util.encryptPassword(encryptedPassword),
+      });
+      throw new ErrorResponse(k_error, "email_send");
     }
     colaboradorMobile.nome_empresa = colaborador.nome_fantasia ?? null;
     const validPassword = await Util.comparePassword(

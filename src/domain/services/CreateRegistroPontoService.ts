@@ -22,7 +22,11 @@ export class CreateRegistroPontoService
   }
   private readonly colaboradorRepository: Repository<ColaboradorMobile>;
   private readonly colaboradorRegistroPontoRepository: Repository<ColaboradorRegistroPonto>;
-  async execute(colaborador_mobile_id): Promise<IResponse<IColaboradorMobile>> {
+  async execute({
+    image_point,
+    colaborador_mobile_id,
+    register_type,
+  }): Promise<IResponse<IColaboradorMobile>> {
     const ultimoRegistroPonto = await this.colaboradorRegistroPontoRepository
       .createQueryBuilder("colaboradorRegistroPonto")
       .where(
@@ -30,32 +34,12 @@ export class CreateRegistroPontoService
       )
       .orderBy("colaboradorRegistroPonto.data_hora", "DESC")
       .getOne();
-    if (!ultimoRegistroPonto) {
-      await this.colaboradorRegistroPontoRepository.save({
-        colaborador_id: colaborador_mobile_id,
-        tipo: "entrada",
-      });
-      return new SuccessResponse(
-        k_success,
-        await this.colaboradorRegistroPontoRepository.find({
-          where: {
-            colaborador_id: { id: colaborador_mobile_id },
-          },
-        })
-      );
-    }
-    if (ultimoRegistroPonto.tipo == "entrada") {
-      await this.colaboradorRegistroPontoRepository.save({
-        colaborador_id: colaborador_mobile_id,
-        tipo: "saida",
-      });
-    } else {
-      await this.colaboradorRegistroPontoRepository.save({
-        colaborador_id: colaborador_mobile_id,
-        tipo: "entrada",
-      });
-    }
 
+    await this.colaboradorRegistroPontoRepository.save({
+      image_point,
+      colaborador_id: colaborador_mobile_id,
+      tipo: register_type,
+    });
     return new SuccessResponse(
       k_success,
       await this.colaboradorRegistroPontoRepository.find({

@@ -5,7 +5,7 @@ import IService from "../../interfaces/service/IServices";
 import { AppDataSource } from "../../ormconfig";
 import { ErrorResponse } from "../../shared/response/ErrorResponse";
 import { ErrorMessage, k_error, k_success } from "../../constants/Constants";
-import { Util } from "../../shared/Util";
+import { Util, UtilEmail } from "../../shared/Util";
 
 export class CreateColaboradorService implements IService<IColaboradorMobile> {
   constructor() {
@@ -13,9 +13,10 @@ export class CreateColaboradorService implements IService<IColaboradorMobile> {
       AppDataSource.getRepository<ColaboradorMobile>(ColaboradorMobile);
   }
   private readonly colaboradorRepository: Repository<ColaboradorMobile>;
-  async execute(
-    colaborador_id: string
-  ): Promise<IResponse<IColaboradorMobile>> {
+  async execute({
+    email,
+    colaborador_id,
+  }): Promise<IResponse<IColaboradorMobile>> {
     let new_colab: ColaboradorMobile;
 
     if (
@@ -38,11 +39,7 @@ export class CreateColaboradorService implements IService<IColaboradorMobile> {
       });
     }
 
-    /*
-    
-    TODO enviar e-mail com a senha gerada encryptedPassword
-    
-    */
+    UtilEmail.enviarEmail(email, "Acesso temporário", encryptedPassword);
 
     if (!new_colab) throw new ErrorResponse(k_error, ErrorMessage.NOT_FOUND);
     return { status: k_success, result: new_colab };

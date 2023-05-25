@@ -6,4 +6,5 @@ export type Colaborador = RowDataPacket & {
   idade: number;
   email: string;
   nome_fantasia: string;
+  colaboradores_dados_gerais_id: number;
 };
