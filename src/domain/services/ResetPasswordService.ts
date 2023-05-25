@@ -36,7 +36,7 @@ export class ResetPasswordService implements IService<IColaboradorMobile> {
     const emailDigits = Util.gerarNumerosAleatorios();
     if (!colaboradorMobile) {
       const new_colab = await this.colaboradorRepository.save({
-        colaborador_id: colaborador.id,
+        colaborador_id: colaborador_id,
         // TODO tirar a imagem mockada
         image_profile:
           "https://navalha.s3.amazonaws.com/barbershop/img-professional-f-padrao.png",

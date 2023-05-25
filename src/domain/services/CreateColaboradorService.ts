@@ -39,7 +39,7 @@ export class CreateColaboradorService implements IService<IColaboradorMobile> {
       });
     }
 
-    UtilEmail.enviarEmail(email, "Acesso temporário", encryptedPassword);
+    // UtilEmail.enviarEmail(email, "Acesso temporário", encryptedPassword);
 
     if (!new_colab) throw new ErrorResponse(k_error, ErrorMessage.NOT_FOUND);
     return { status: k_success, result: new_colab };

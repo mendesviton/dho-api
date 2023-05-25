@@ -9,6 +9,10 @@ import { ChangePasswordController } from "./controllers/ChangePasswordController
 import { ResetPasswordController } from "./controllers/ResetPasswordController";
 import { CreateRegistroPontoController } from "./controllers/CreateRegistroPontoController";
 import { UpdateImageProfileController } from "./controllers/UpdateImageProfileController";
+import multer from "multer";
+import multerConfig from "../config/multer";
+
+const upload = multer(multerConfig);
 
 export default class Routes {
   private routes = Router();
@@ -41,10 +45,12 @@ export default class Routes {
     this.routes.post("/reset/:email", this.resetPasswordController.handle);
     this.routes.post(
       "/create/point/:id",
+      upload.single("image"),
       this.createRegistroPontoController.handle
     );
     this.routes.put(
       "/update/image/:id",
+      upload.single("image"),
       this.updateImageProfileController.handle
     );
 
